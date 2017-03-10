@@ -18,13 +18,9 @@ local modem = component.modem
 if not modem.isWireless() then
   error("How on earth are you going to connect tablets to me? You picked the wrong modem.")
 end
-modem.setStrength(config.get("network", {}, true)
-                        .get("modem", {}, true)
-                        .get("strength", 400))
+modem.setStrength(config.network.modem.strength)
 
-local port = config.get("network", {}, true)
-                   .get("modem", {}, true)
-                   .get("port", 12345)
+local port = config.network.modem.port
 modem.open(port)
 
 EventEngine:subscribe("sendmsg", events.priority.low, function(handler, evt)

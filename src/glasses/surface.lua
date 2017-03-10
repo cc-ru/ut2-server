@@ -40,8 +40,31 @@ local function addObject(...)
     local quad = glasses.addQuad()
     quad.setVertex(1, args[3].x, args[3].y)
     quad.setVertex(2, args[4].x, args[4].y)
-    quad.setColor(args[5])
+    quad.setColor(convColor(args[5]))
     return quad
+  elseif args[2] == "addPolygon" then
+    local quad = glasses.addQuad()
+    quad.setColor(convColor(args[3]))
+    quad.setAlpha(args[4])
+    for i = 1, #args - 4, 1 do
+      quad.setVertex(i, args[i].x, args[i].y)
+    end
+    for i = #args - 4 + 1, 4, 1 do
+      quad.setVertex(i, args[#args - 4].x, args[#args - 4].y)
+    end
+    if #args > 8 then
+      local quad2 = glasses.addQuad()
+      quad.setVertex(1, args[5].x, args[5].y)
+      quad.setVertex(2, args[8].x, args[8].y)
+      quad.setVertex(3, args[9].x, args[9].y)
+      if args[10] then
+        quad.setVertex(4, args[10].x, args[10].y)
+      else
+        quad.setVertex(4, args[9].x, args[9].y)
+      end
+      return {quad, quad2}
+    end
+    return {quad}
   end
 end
 
