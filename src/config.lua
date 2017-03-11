@@ -27,11 +27,12 @@ network.modem.port = 12345
 -- The bonus items that can be spawned
 world.bonuses = {
   --↓ chance
-  --    ↓ id
-  --                      ↓ meta
-  --                         ↓ nbt
-  --                             ↓ lifetime
-  {0.5, "minecraft:coal", 0, "", 30}
+  --    ↓ count
+  --       ↓ id
+  --            ↓ meta
+  --               ↓ nbt
+  --                   ↓ lifetime
+  {0.5, 2, 263, 0, "", 30}
 }
 
 -- The bonus spawn area
