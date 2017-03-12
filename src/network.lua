@@ -6,7 +6,7 @@
 local component = require("component")
 local srl = require("serialization")
 
-local module = require("ut-serv.modules")
+local module = require("ut2-serv.modules")
 local events = module.load("events")
 local config = module.load("config")
 local db = module.load("db")
@@ -16,7 +16,7 @@ local EventEngine = events.engine
 local modem = component.modem
 
 if not modem.isWireless() then
-  error("How on earth are you going to connect tablets to me? You picked the wrong modem.")
+  error("welp, that's a problem: you forgot to give me some wirelessness")
 end
 modem.setStrength(config.network.modem.strength)
 

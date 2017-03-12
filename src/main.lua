@@ -7,7 +7,7 @@
 
 local event = require("event")
 
-local module = require("ut-serv.modules")
+local module = require("ut2-serv.modules")
 module.clearCache()
 
 -- load all modules

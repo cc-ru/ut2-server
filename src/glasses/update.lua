@@ -1,4 +1,4 @@
-local module = require("ut-serv.modules")
+local module = require("ut2-serv.modules")
 local db = module.load("db")
 local events = module.load("events")
 

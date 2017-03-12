@@ -1,7 +1,7 @@
 -- In-memory DB
 -- actually, just a Lua table
 
-local module = require("ut-serv.modules")
+local module = require("ut2-serv.modules")
 local config = module.load("config")
 
 local totalGameTime = config.game.totalGameTime

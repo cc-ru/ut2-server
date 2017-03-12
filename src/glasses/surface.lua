@@ -1,7 +1,7 @@
 local bit32 = require("bit32")
 local com = require("component")
 
-local module = require("ut-serv.modules")
+local module = require("ut2-serv.modules")
 local config = module.load("config")
 local db = module.load("db")
 local events = module.load("events")

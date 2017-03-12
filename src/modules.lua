@@ -8,10 +8,10 @@ local fs = require("filesystem")
 
 local module = {}
 module.path = {
-  "/usr/lib/ut-serv/?.lua",
-  "/usr/lib/ut-serv/?/init.lua",
-  "/home/lib/ut-serv/?.lua",
-  "/home/lib/ut-serv/?/init.lua"
+  "/usr/lib/ut2-serv/?.lua",
+  "/usr/lib/ut2-serv/?/init.lua",
+  "/home/lib/ut2-serv/?.lua",
+  "/home/lib/ut2-serv/?/init.lua"
 }
 module.cache = {}
 
