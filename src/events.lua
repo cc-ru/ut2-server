@@ -20,6 +20,8 @@ events.UpdateScore = EventEngine:event("updatescore")
 events.WorldTick = EventEngine:event("worldtick")
 events.DestroyLoot = EventEngine:event("destroyloot")
 events.UIUpdate = EventEngine:event("uiupdate")
+events.GenerateMap = EventEngine:event("genmap")
+events.ClearMap = EventEngine:event("clearmap")
 
 EventEngine:stdEvent("modem_message", events.RecvMsg)
 

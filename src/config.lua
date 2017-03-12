@@ -47,6 +47,9 @@ world.field.l = 17
 -- Sync message interval
 game.syncMsgInterval = 10
 
+-- Bonus spawn interval
+game.bonusSpawnInterval = 15
+
 -- The default game time
 game.totalGameTime = 600
 
