@@ -39,10 +39,18 @@ local function addObject(...)
     text.setScale(1)
     objects[args[1]] = text
     return text
-  elseif args[2] == "addLine" then
+  elseif args[2] == "addHLine" or args[2] == "addVLine" then
     local quad = glasses.addQuad()
+    local dx, dy
+    if args[2] == "addHLine" then
+      dx, dy = 0, 1
+    else
+      dx, dy = 1, 0
+    end
     quad.setVertex(1, args[3].x, args[3].y)
     quad.setVertex(2, args[4].x, args[4].y)
+    quad.setVertex(3, args[4].x + dx, args[4].y + dy)
+    quad.setVertex(4, args[3].x + dx, args[3].y + dy)
     quad.setColor(convColor(args[5]))
     objects[args[1]] = quad
     return quad
@@ -76,16 +84,16 @@ local function drawUI()
   addObject("score.red.box", "addBox", 105, 5, 50, 50, 0xff2020, .33)
   addObject("score.yellow.box", "addBox", 155, 5, 50, 50, 0xffff20, .33)
 
-  local score1 = addObject("score.blue.text", "addText", 13 / 3, 20 / 3, "00", 0xffffff)
+  local score1 = addObject("score.blue.text", "addText", 14.5 / 3, 20 / 3, "00", 0xffffff)
   score1.setScale(3)
 
-  local score2 = addObject("score.green.text", "addText", 63 / 3, 20 / 3, "00", 0xffffff)
+  local score2 = addObject("score.green.text", "addText", 64.5 / 3, 20 / 3, "00", 0xffffff)
   score2.setScale(3)
 
-  local score3 = addObject("score.red.text", "addText", 113 / 3, 20 / 3, "00", 0xffffff)
+  local score3 = addObject("score.red.text", "addText", 114.5 / 3, 20 / 3, "00", 0xffffff)
   score3.setScale(3)
 
-  local score4 = addObject("score.yellow.text", "addText", 163 / 3, 20 / 3, "00", 0xffffff)
+  local score4 = addObject("score.yellow.text", "addText", 164.5 / 3, 20 / 3, "00", 0xffffff)
   score4.setScale(3)
 
   -- SCORE PRBAR
@@ -97,7 +105,7 @@ local function drawUI()
   -- TIME BOX
   addObject("time.box", "addBox", 5, 60, 200, 50, 0xffffff, .5)
 
-  addObject("time.separator", "addLine", {x=105, y=63}, {x=105, y=107}, 0x606060)
+  addObject("time.separator", "addVLine", {x=105, y=63}, {x=105, y=107}, 0x606060)
 
   local passed = addObject("time.passed.time", "addText", 18 / 3, 75 / 3, "00:00", 0x000000)
   passed.setScale(3)
