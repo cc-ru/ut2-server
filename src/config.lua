@@ -35,13 +35,21 @@ world.bonuses = {
   {0.5, 2, 263, 0, "", 30}
 }
 
--- The bonus spawn area
+-- The arena area
 world.field.x = -17
 world.field.y = 65
 world.field.z = -17
-world.field.w = 17
+world.field.w = 35
 world.field.h = 4
-world.field.l = 17
+world.field.l = 35
+
+-- The arena blocks
+world.blocks = {
+  {0.01, "chisel:obisdian", 3},
+  {0.05, "chisel:glass", 5},
+  {0.15, "chisel:wood", 0},
+  {1, "minecraft:air", 0}
+}
 
 -- < Game settings > -----------------------------------------------------------
 -- Sync message interval
@@ -63,7 +71,6 @@ local function loadConfig(contents)
       modem = {}
     },
     world = {
-      bonuses = {},
       field = {}
     },
     game = {}
@@ -87,10 +94,17 @@ local function loadConfig(contents)
         w = 17,
         h = 4,
         l = 17
+      },
+      blocks = {
+        {0.01, "chisel:obisdian", 3},
+        {0.05, "chisel:glass", 5},
+        {0.15, "chisel:wood", 0},
+        {1, "minecraft:air", 0}
       }
     },
     game = {
       syncMsgInterval = 10,
+      bonusSpawnInterval = 15,
       totalGameTime = 600,
       admins = {"Fingercomp", "Totoro"}
     }

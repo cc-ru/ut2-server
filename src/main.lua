@@ -17,6 +17,7 @@ module.load("network")
 module.load("db")
 module.load("game.world")
 module.load("game.control")
+moduel.load("game.generate")
 module.load("glasses.update")
 module.load("glasses.surface")
 
