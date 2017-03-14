@@ -8,6 +8,7 @@ local module = require("ut2-serv.modules")
 local db = module.load("db")
 local events = module.load("events")
 local config = module.load("config")
+local gui = module.load("gui")
 
 local debug = com.debug
 
@@ -48,20 +49,20 @@ EventEngine:subscribe("randombonus", events.priority.high, function(handler, evt
   local x, y, z = math.random(field.x, field.x + field.w - 1),
                   math.random(field.y, field.y + field.h - 1),
                   math.random(field.z, field.z + field.l - 1)
-  for _, bonus in pairs(config.bonuses) do
+  for _, bonus in pairs(config.world.bonuses) do
     if math.random(0, 99) / 100 < bonus[1] then
-      EventEngine:push(events.SetBonus {
+      EventEngine:push(events.SpawnBonus {
         x = x,
         y = y,
         z = z,
         lifetime = bonus[6],
         count = bonus[2],
-        meta = data[4],
-        id = data[3],
-        tag = data[5]
+        meta = bonus[4],
+        id = bonus[3],
+        tag = bonus[5]
       })
       EventEngine:push(events.SendMsg {"spawnedbonus", x, y, z})
-      print("[" .. db.remaining .. "] Spawned a bonus at " .. x .. ", " .. y .. ", " .. z .. ": " .. bonus[2] .. " × " .. bonus[3] .. "/" .. bonus[4] .. " for " .. bonus[6] .. "s")
+      gui.log("Spawned a bonus at " .. x .. ", " .. y .. ", " .. z .. ": " .. bonus[2] .. " × " .. bonus[3] .. "/" .. bonus[4] .. " for " .. bonus[6] .. "s")
     end
   end
 end)

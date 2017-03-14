@@ -45,10 +45,9 @@ world.field.l = 27
 
 -- The arena blocks
 world.blocks = {
-  {0.01, "chisel:obsidian", 3},
-  {0.05, "chisel:glass", 5},
-  {0.15, "chisel:planks-jungle", 6},
-  {1, "minecraft:air", 0}
+  {10, "chisel:obsidian", 3},
+  {50, "chisel:glass", 5},
+  {150, "chisel:planks-jungle", 6}
 }
 
 -- < Game settings > -----------------------------------------------------------
@@ -60,6 +59,9 @@ game.bonusSpawnInterval = 15
 
 -- The default game time
 game.totalGameTime = 600
+
+-- Score update interval
+game.scoreUpdateInterval = 15
 
 -- People who can control the server
 game.admins = {"Fingercomp", "Totoro"}
@@ -88,24 +90,24 @@ local function loadConfig(contents)
         {0.5, "minecraft:coal", 0, "", 30}
       },
       field = {
-        x = -17,
+        x = -13,
         y = 65,
-        z = -17,
-        w = 17,
+        z = -13,
+        w = 27,
         h = 4,
-        l = 17
+        l = 27
       },
       blocks = {
-        {0.01, "chisel:obisdian", 3},
-        {0.05, "chisel:glass", 5},
-        {0.15, "chisel:wood", 0},
-        {1, "minecraft:air", 0}
+        {10, "chisel:obsidian", 3},
+        {50, "chisel:glass", 5},
+        {150, "chisel:wood", 0}
       }
     },
     game = {
       syncMsgInterval = 10,
       bonusSpawnInterval = 15,
       totalGameTime = 600,
+      scoreUpdateInterval = 15,
       admins = {"Fingercomp", "Totoro"}
     }
   }
@@ -147,7 +149,7 @@ local function loadConfig(contents)
   end
 
   local env = createEnv(base, default, config)
-  load(contents, "config", "t", env)
+  load(contents, "config", "t", env)()
 
   local function setGet(base, default, config)
     return setmetatable({}, {

@@ -69,6 +69,7 @@ local editTotalTime = frameTime:addEdit(2, 5, function(self)
     local time = str2time(self.text)
     if time then
       db.time = time
+      db.remaining = 0
       EventEngine:push(events.UIUpdate())
     end
   end
@@ -238,12 +239,16 @@ frameLog.H = 10
 frameLog.color = 0x4B4B4B
 frameLog.fontColor = root.fontColor
 
-local editLog = frameLog:addEdit(1, 1, function() end)
-editLog.W = frameLog.W
-editLog.H = frameLog.H
-editLog.color = frameLog.color
-editLog.fontColor = frameLog.fontColor
-editLog.text = {}
+local listLog = frameLog:addList(1, 1, function() end)
+listLog.W = frameLog.W
+listLog.H = frameLog.H
+listLog.border = 1
+listLog.color = frameLog.color
+listLog.fontColor = frameLog.fontColor
+listLog.selColor = listLog.color
+listLog.sfColor = listLog.fontColor
+listLog.lines = {}
+listLog.items = {}
 
 EventEngine:subscribe("uiupdate", events.priority.normal, function(handler, evt)
   labelPassedTime.caption = time2str(db.time - db.remaining)
@@ -290,6 +295,17 @@ local function run()
   gpu.setResolution(oldw, oldh)
 end
 
+local function log(msg)
+  local line = "[" .. time2str(db.time - db.remaining) .. "/" .. time2str(db.time) .. "] " .. msg
+  table.insert(listLog.lines, line)
+  listLog.shift = #listLog.lines - listLog.H + 2
+  if #listLog.lines <= listLog.H then
+    listLog.shift = 0
+  end
+  listLog:redraw()
+end
+
 return {
-  run = run
+  run = run,
+  log = log
 }

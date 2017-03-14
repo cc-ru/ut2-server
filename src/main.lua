@@ -32,6 +32,8 @@ EventEngine:subscribe("quit", events.priority.bottom, function(handler, evt)
   running = false
 end)
 
+EventEngine:timer(1, events.UIUpdate, math.huge)
+
 gui.run()
 
 EventEngine:push(events.Stop())
