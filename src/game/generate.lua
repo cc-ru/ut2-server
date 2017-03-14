@@ -14,16 +14,13 @@ engine:subscribe("genmap", events.priority.normal, function(handler, evt)
     for y = field.y, field.y + field.h - 1, 1 do
       for z = field.z, field.z + field.l - 1, 1 do
         local random = math.random(0, 1000) / 1000
-        local index = 1
         for i = 1, #config.world.blocks, 1 do
           local block = config.world.blocks[i]
-          if random < block[1] then
+          if random <= block[1] then
+            debug.getWorld().setBlock(x, y, z, block[2], block[3])
             break
           end
-          index = i + 1
         end
-        local block = config.world.blocks[index]
-        debug.getWorld().setBlock(x, y, z, block[2], block[3])
       end
     end
   end

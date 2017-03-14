@@ -36,18 +36,18 @@ world.bonuses = {
 }
 
 -- The arena area
-world.field.x = -17
+world.field.x = -13
 world.field.y = 65
-world.field.z = -17
-world.field.w = 35
+world.field.z = -13
+world.field.w = 27
 world.field.h = 4
-world.field.l = 35
+world.field.l = 27
 
 -- The arena blocks
 world.blocks = {
-  {0.01, "chisel:obisdian", 3},
+  {0.01, "chisel:obsidian", 3},
   {0.05, "chisel:glass", 5},
-  {0.15, "chisel:wood", 0},
+  {0.15, "chisel:planks-jungle", 6},
   {1, "minecraft:air", 0}
 }
 

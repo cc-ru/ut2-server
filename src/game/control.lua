@@ -22,9 +22,6 @@ end)
 EventEngine:subscribe("updatescore", events.priority.high, function(handler, evt)
   print("[" .. db.remaining .. "] Updating score")
   local world = debug.getWorld()
-  for team, coords in pairs(inv) do
-    db.teams[team].score = getCoins(world, table.unpack(coords))
-  end
 end)
 
 EventEngine:subscribe("worldtick", events.priority.high, function(handler, evt)

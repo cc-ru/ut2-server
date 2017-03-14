@@ -20,6 +20,7 @@ end
 local objects = {}
 
 local function addObject(...)
+  os.sleep(0)  -- oh well
   local args = {...}
   if args[2] == "addBox" then
     local rect = glasses.addRect()

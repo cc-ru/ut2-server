@@ -2,8 +2,10 @@ local com = require("component")
 local term = require("term")
 
 local module = require("ut2-serv.modules")
+local db = module.load("db")
 local events = module.load("events")
 
+local debug = com.debug
 local gpu = com.gpu
 
 local EventEngine = events.engine
@@ -13,6 +15,20 @@ gpu.setResolution(80, 25)
 os.sleep(0)
 
 local forms = require("forms")
+
+local function str2time(s)
+  local minutes, seconds = s:match("^(%d%d):(%d%d)$")
+  if not minutes then
+    return false
+  end
+  return minutes * 60 + seconds
+end
+
+local function time2str(time)
+  local minutes = math.floor(time / 60)
+  local seconds = time - minutes * 60
+  return ("%02d:%02d"):format(minutes, seconds)
+end
 
 local root = forms.addForm()
 root.color = 0x2D2D2D
@@ -48,7 +64,15 @@ local labelTotal = frameTime:addLabel(2, 4, "Total time")
 labelTotal.color = frameTime.color
 labelTotal.fontColor = 0xC3C3C3
 
-local editTotalTime = frameTime:addEdit(2, 5, function() end)
+local editTotalTime = frameTime:addEdit(2, 5, function(self)
+  if not db.started then
+    local time = str2time(self.text)
+    if time then
+      db.time = time
+      EventEngine:push(events.UIUpdate())
+    end
+  end
+end)
 editTotalTime.W = frameTime.W - 2
 editTotalTime.H = 3
 editTotalTime.text = "10:00"
@@ -99,7 +123,11 @@ local buttonTimeAction = frameTimeAction:addButton(
   2,
   "Start",
   function()
-    EventEngine:push(events.GameStart())
+    if db.started then
+      EventEngine:push(events.GameStop())
+    else
+      EventEngine:push(events.GameStart())
+    end
   end)
 buttonTimeAction.W = frameTimeAction.W - buttonTimeAction.left - 1
 buttonTimeAction.H = frameTimeAction.H - 2
@@ -134,7 +162,10 @@ for k, v in pairs(contestants) do
   score.color = v.color
   score.fontColor = 0x000000
 
-  local field = frame:addEdit(6, 1, function() end)
+  local field = frame:addEdit(6, 1, function(self)
+    db.teams[k].name = self.text
+    EventEngine:push(events.UIUpdate())
+  end)
   field.W = frame.W - 4 - 1
   field.H = 3
   field.color = frame.color
@@ -159,43 +190,43 @@ listUsers.fontColor = frameUsers.fontColor
 listUsers.selColor = 0x696969
 listUsers.sfColor = 0xFFFFFF
 
-local buttonBan = frameUsers:addButton(2, frameUsers.H - 6, "Ban", function() end)
+local buttonBan = frameUsers:addButton(2, frameUsers.H - 5, "Ban", function() end)
 buttonBan.W = 6
 buttonBan.H = 2
 buttonBan.color = 0x660000
 buttonBan.fontColor = frameUsers.fontColor
 
-local buttonKick = frameUsers:addButton(2, frameUsers.H - 3, "Kick", function() end)
+local buttonKick = frameUsers:addButton(2, frameUsers.H - 2, "Kick", function() end)
 buttonKick.W = 6
 buttonKick.H = 2
 buttonKick.color = 0x660000
 buttonKick.fontColor = frameUsers.fontColor
 
-local buttonTp2p = frameUsers:addButton(10, frameUsers.H - 6, "Tp2p", function() end)
+local buttonTp2p = frameUsers:addButton(10, frameUsers.H - 5, "Tp2p", function() end)
 buttonTp2p.W = 6
 buttonTp2p.H = 2
 buttonTp2p.color = 0x660000
 buttonTp2p.fontColor = frameUsers.fontColor
 
-local buttonTphere = frameUsers:addButton(10, frameUsers.H - 3, "Tphere", function() end)
+local buttonTphere = frameUsers:addButton(10, frameUsers.H - 2, "Tphere", function() end)
 buttonTphere.W = 6
 buttonTphere.H = 2
 buttonTphere.color = 0x660000
 buttonTphere.fontColor = frameUsers.fontColor
 
-local buttonTpLobby = frameUsers:addButton(17, frameUsers.H - 6, "Lobby", function() end)
+local buttonTpLobby = frameUsers:addButton(17, frameUsers.H - 5, "Lobby", function() end)
 buttonTpLobby.W = 6
 buttonTpLobby.H = 1
 buttonTpLobby.color = 0x660000
 buttonTpLobby.fontColor = frameUsers.fontColor
 
-local buttonTpScene = frameUsers:addButton(17, frameUsers.H - 4, "Scene", function() end)
+local buttonTpScene = frameUsers:addButton(17, frameUsers.H - 3, "Scene", function() end)
 buttonTpScene.W = 6
 buttonTpScene.H = 1
 buttonTpScene.color = 0x660000
 buttonTpScene.fontColor = frameUsers.fontColor
 
-local buttonTpArena = frameUsers:addButton(17, frameUsers.H - 2, "Arena", function() end)
+local buttonTpArena = frameUsers:addButton(17, frameUsers.H - 1, "Arena", function() end)
 buttonTpArena.W = 6
 buttonTpArena.H = 1
 buttonTpArena.color = 0x660000
@@ -213,6 +244,44 @@ editLog.H = frameLog.H
 editLog.color = frameLog.color
 editLog.fontColor = frameLog.fontColor
 editLog.text = {}
+
+EventEngine:subscribe("uiupdate", events.priority.normal, function(handler, evt)
+  labelPassedTime.caption = time2str(db.time - db.remaining)
+  labelPassedTime:redraw()
+  labelRemainingTime.caption = time2str(db.remaining)
+  labelRemainingTime:redraw()
+  prbarTime.value = (db.time - db.remaining) / db.time
+  if prbarTime.value == math.huge then
+    prbarTime.value = 0
+  end
+  prbarTime:redraw()
+  customActionTop:redraw()
+  buttonTimeAction.caption = db.started and "Stop" or "Start"
+  buttonTimeAction:redraw()
+  for k, v in pairs(contestants) do
+    v.score.caption = ("%02d"):format(db.teams[k].alive)
+    v.score:redraw()
+  end
+  do
+    local selected
+    if listUsers.index ~= 0 then
+      selected = listUsers.items[listUsers.index]
+    end
+    listUsers:clear()
+    local index = 0
+    for k, v in pairs(debug.getPlayers()) do
+      if k ~= "n" then
+        table.insert(listUsers.items, v)
+        table.insert(listUsers.lines, v)
+        if v == selected then
+          index = #listUsers.lines
+        end
+      end
+    end
+    listUsers.index = index
+    listUsers:redraw()
+  end
+end)
 
 local function run()
   forms.run(root)
