@@ -17,9 +17,10 @@ module.load("network")
 module.load("db")
 module.load("game.world")
 module.load("game.control")
-moduel.load("game.generate")
+module.load("game.generate")
 module.load("glasses.update")
 module.load("glasses.surface")
+local gui = module.load("gui")
 
 EventEngine = events.engine
 
@@ -31,11 +32,7 @@ EventEngine:subscribe("quit", events.priority.bottom, function(handler, evt)
   running = false
 end)
 
-while running do
-  if event.pull(.05, "interrupted") then
-    running = false
-  end
-end
+gui.run()
 
 EventEngine:push(events.Stop())
 

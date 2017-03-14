@@ -1,7 +1,8 @@
 {name = "ut2-server",
  version = "0.0.0",
  dependencies = {
-  {name = "libaevent", version = "^1.1", type = "required"}
+  {name = "libaevent", version = "^1.1", type = "required"},
+  {name = "libforms", version = "^1.0", type = "required"}
  },
  files = {
   {url = "src/main.lua", dir = "/usr/lib/ut2-serv", name = "main.lua"},
@@ -10,8 +11,10 @@
   {url = "src/events.lua", dir = "/usr/lib/ut2-serv", name = "events.lua"},
   {url = "src/modules.lua", dir = "/usr/lib/ut2-serv", name = "modules.lua"},
   {url = "src/network.lua", dir = "/usr/lib/ut2-serv", name = "network.lua"},
+  {url = "src/gui.lua", dir = "/usr/lib/ut2-serv", name = "gui.lua"},
   {url = "src/game/control.lua", dir = "/usr/lib/ut2-serv/game", name = "control.lua"},
   {url = "src/game/world.lua", dir = "/usr/lib/ut2-serv/game", name = "world.lua"},
+  {url = "src/game/generate.lua", dir = "/usr/lib/ut2-serv/game", name = "generate.lua"},
   {url = "src/glasses/surface.lua", dir = "/usr/lib/ut2-serv/glasses", name = "surface.lua"},
   {url = "src/glasses/update.lua", dir = "/usr/lib/ut2-serv/glasses", name = "update.lua"}
  }
