@@ -10,6 +10,7 @@ local events = module.load("events")
 local config = module.load("config")
 local gui = module.load("gui")
 
+local cb = com.command_block
 local debug = com.debug
 
 local EventEngine = events.engine
@@ -17,32 +18,31 @@ local EventEngine = events.engine
 local field = config.world.field
 
 EventEngine:subscribe("spawnbonus", events.priority.high, function(handler, evt)
-  local result = debug.runCommand("summon item " ..
-                                  evt.x .. " " ..
-                                  evt.y .. " " ..
-                                  evt.z .. " " ..
-                                  "{" ..
-                                    "NoGravity:1," ..
-                                    "Invulnerable:1," ..
-                                    "CustomName:\"Bonus\"," ..
-                                    "CustomNameVisible:0," ..
-                                    "Glowing:1," ..
-                                    "Age:" .. 6000 - evt.lifetime .. "," ..
-                                    "PickupDelay:32767," ..
-                                    "Item:{" ..
-                                      "Count:" .. evt.count .. "," ..
-                                      "Damage:" .. evt.meta .. "," ..
-                                      "id:" .. evt.id .. "," ..
-                                      "tag:" .. evt.tag ..
-                                    "}" ..
-                                  "}")
-  if not result then
-    evt:cancel()
-  end
+  cb.setCommand("summon Item " ..
+                evt.x .. " " ..
+                evt.y .. " " ..
+                evt.z .. " " ..
+                "{" ..
+                  "NoGravity:1b," ..
+                  "Invulnerable:1b," ..
+                  "CustomName:\"Bonus\"," ..
+                  "CustomNameVisible:0b," ..
+                  "Glowing:1b," ..
+                  "Age:" .. 6000 - (evt.lifetime * 20) .. "s," ..
+                  "PickupDelay:32767s," ..
+                  "Item:{" ..
+                    "Count:" .. evt.count .. "b," ..
+                    "Damage:" .. evt.meta .. "s," ..
+                    "id:" .. ("%q"):format(evt.id) .. "," ..
+                    "tag:" .. evt.tag ..
+                  "}" ..
+                "}")
+  cb.executeCommand()
 end)
 
 EventEngine:subscribe("destroyloot", events.priority.high, function(handler, evt)
-  debug.runCommand("kill @e[type=item,name=Bonus]")
+  cb.setCommand("minecraft:kill @e[type=Item,name=Bonus]")
+  cb.executeCommand()
 end)
 
 EventEngine:subscribe("randombonus", events.priority.high, function(handler, evt)

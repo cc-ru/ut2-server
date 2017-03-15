@@ -14,6 +14,7 @@ local db = module.load("db")
 local EventEngine = events.engine
 
 local modem = component.modem
+local tunnel = component.tunnel
 
 if not modem.isWireless() then
   error("welp, that's a problem: you forgot to give me some wirelessness")
@@ -39,5 +40,11 @@ EventEngine:subscribe("recvmsg", events.priority.low, function(handler, evt)
       db.remaining,
       db.time,
       srl.serialize(db.teams)})
+  end
+end)
+
+EventEngine:subscribe("recvmsg", events.priority.high, function(handler, evt)
+  if data[1] == tunnel.address then
+    EventEngine:push(events.TunnelMessage(table.unpack(data:get())))
   end
 end)

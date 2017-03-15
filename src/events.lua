@@ -22,6 +22,7 @@ events.DestroyLoot = EventEngine:event("destroyloot")
 events.UIUpdate = EventEngine:event("uiupdate")
 events.GenerateMap = EventEngine:event("genmap")
 events.ClearMap = EventEngine:event("clearmap")
+events.TunnelMessage = EventEngine:event("tunnelmsg")
 
 EventEngine:stdEvent("modem_message", events.RecvMsg)
 

@@ -299,7 +299,7 @@ local function log(msg)
   local line = "[" .. time2str(db.time - db.remaining) .. "/" .. time2str(db.time) .. "] " .. msg
   table.insert(listLog.lines, line)
   listLog.shift = #listLog.lines - listLog.H + 2
-  if #listLog.lines <= listLog.H then
+  if #listLog.lines < listLog.H then
     listLog.shift = 0
   end
   listLog:redraw()
