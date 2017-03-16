@@ -46,8 +46,8 @@ world.field.l = 27
 -- The arena blocks
 world.blocks = {
   {15, "chisel:obsidian", 3},
-  {90, "chisel:glass", 5},
-  {180, "chisel:planks-jungle", 6}
+  {30, "chisel:glass", 5},
+  {90, "chisel:planks-jungle", 6}
 }
 
 -- The numeric id of an OpenComputers robot
@@ -104,9 +104,9 @@ local function loadConfig(contents)
         l = 27
       },
       blocks = {
-        {10, "chisel:obsidian", 3},
-        {50, "chisel:glass", 5},
-        {150, "chisel:wood", 0}
+        {15, "chisel:obsidian", 3},
+        {90, "chisel:glass", 5},
+        {120, "chisel:planks-jungle", 6}
       },
       robotid = 459
     },

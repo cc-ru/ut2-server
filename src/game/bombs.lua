@@ -9,9 +9,9 @@ local cb = com.command_block
 local EventEngine = events.engine
 
 EventEngine:subscribe("tunnelmsg", events.priority.normal, function(handler, evt)
-  local x, y, z = evt[6], evt[7], evt[8]
-  local bombType = evt[9]
-  local command = evt[10]
+  local x, y, z = evt[5], evt[6], evt[7]
+  local bombType = evt[8]
+  local command = evt[9]
   cb.setCommand(command)
   cb.executeCommand()
   gui.log("Got command [" .. x .. ", " .. y .. ", " .. z .. ": " .. bombType .. "] " .. command)

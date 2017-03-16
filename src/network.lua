@@ -45,6 +45,6 @@ end)
 
 EventEngine:subscribe("recvmsg", events.priority.high, function(handler, evt)
   if evt[1] == tunnel.address then
-    EventEngine:push(events.TunnelMessage(table.unpack(data:get())))
+    EventEngine:push(events.TunnelMessage(evt:get()))
   end
 end)
