@@ -10,27 +10,14 @@ local debug = com.debug
 local field = config.world.field
 local engine = events.engine
 
-local blocks = config.world.blocks
-
 engine:subscribe("genmap", events.priority.normal, function(handler, evt)
-  for y = field.y, field.y + field.h - 1, 1 do
-    for x = field.x, field.x + field.w - 1, 1 do
-      for z = field.z, field.z + field.l - 1, 1 do
-        local random = math.random(0, 1000)
-        if random <= blocks[1][1] then
-          cb.setCommand("setblock " .. table.concat({x, y, z, blocks[1][2], blocks[1][3]}, " "))
-          cb.executeCommand()
-          break
-        elseif random <= blocks[2][1] then
-          cb.setCommand("setblock " .. table.concat({x, y, z, blocks[2][2], blocks[2][3]}, " "))
-          cb.executeCommand()
-          break
-        elseif random <= blocks[3][1] then
-          cb.setCommand("setblock " .. table.concat({x, y, z, blocks[3][2], blocks[3][3]}, " "))
-          cb.executeCommand()
-          break
-        end
-      end
+  for k, v in pairs(config.world.blocks) do
+    for i = 1, v[1], 1 do
+      local x, y, z = math.random(field.x, field.x + field.w - 1),
+                      math.random(field.y, field.y + field.h - 1),
+                      math.random(field.z, field.z + field.l - 1)
+      cb.setCommand("setblock " .. table.concat({x, y, z, v[2], v[3]}, " "))
+      cb.executeCommand()
     end
   end
 end)

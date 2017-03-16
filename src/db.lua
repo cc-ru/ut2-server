@@ -25,5 +25,7 @@ return {
   -- the total game time
   time = totalGameTime,
   -- timers
-  timers = {}
+  timers = {},
+  -- to prevent worldtick handler from looping
+  updatingScore = false
 }

@@ -45,10 +45,13 @@ world.field.l = 27
 
 -- The arena blocks
 world.blocks = {
-  {10, "chisel:obsidian", 3},
-  {50, "chisel:glass", 5},
-  {150, "chisel:planks-jungle", 6}
+  {15, "chisel:obsidian", 3},
+  {90, "chisel:glass", 5},
+  {180, "chisel:planks-jungle", 6}
 }
+
+-- The numeric id of an OpenComputers robot
+world.robotid = 459
 
 -- < Game settings > -----------------------------------------------------------
 -- Sync message interval
@@ -62,6 +65,9 @@ game.totalGameTime = 600
 
 -- Score update interval
 game.scoreUpdateInterval = 15
+
+-- The time to wait for the "whoalive" replies
+game.alivePollTime = 2
 
 -- People who can control the server
 game.admins = {"Fingercomp", "Totoro"}
@@ -101,13 +107,15 @@ local function loadConfig(contents)
         {10, "chisel:obsidian", 3},
         {50, "chisel:glass", 5},
         {150, "chisel:wood", 0}
-      }
+      },
+      robotid = 459
     },
     game = {
       syncMsgInterval = 10,
       bonusSpawnInterval = 15,
       totalGameTime = 600,
       scoreUpdateInterval = 15,
+      alivePollTime = 2,
       admins = {"Fingercomp", "Totoro"}
     }
   }

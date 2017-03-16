@@ -35,26 +35,53 @@ EventEngine:subscribe("setplayerlist", events.priority.high, function(handler, e
 end)
 
 EventEngine:subscribe("updatescore", events.priority.high, function(handler, evt)
+  db.updatingScore = true
   local world = debug.getWorld()
+  EventEngine:push(events.SendMsg {"whoalive"})
+  local alive = {blue = 0, green = 0, red = 0, yellow = 0}
+  local recdResponse = {}
+  local subscriber = EventEngine:subscribe("recvmsg", events.priority.high, function(handler, evt)
+    local team, x, y, z = evt[6], evt[7], evt[8], evt[9]
+    if evt[5] == "i'm alive" then
+      if not recdResponse[evt[2]] then
+        if type(team) == "string" and alive[team] then
+          if type(x) == "number" and type(y) == "number" and type(z) == "number" then
+            if debug.getWorld().getBlockId(x, y, z) == config.world.robotid then
+              alive[team] = alive[team] + 1
+              recdResponse[evt[2]] = true
+            end
+          end
+        end
+      end
+    end
+  end)
+  os.sleep(config.game.alivePollTime)
+  subscriber:destroy()
+  for k, v in pairs(alive) do
+    db.teams[k].alive = v
+  end
+  db.updatingScore = false
 end)
 
 EventEngine:subscribe("worldtick", events.priority.high, function(handler, evt)
-  db.remaining = db.remaining - 1
-  db.scoreUpdate = db.scoreUpdate - 1
-  db.syncMsg = db.syncMsg - 1
-  if db.remaining <= 0 then
-    gui.log("Time is out")
-    EventEngine:push(events.GameStop())
-  end
-  if db.scoreUpdate <= 0 then
-    gui.log("Updating score...")
-    EventEngine:push(events.UpdateScore())
-    db.scoreUpdate = scoreUpdateInterval
-  end
-  if db.syncMsg <= 0 then
-    gui.log("Sending sync msg")
-    EventEngine:push(events.SendMsg {"time", db.remaining, db.time})
-    db.syncMsg = syncMsgInterval
+  db.remaining = math.max(0, db.remaining - 1)
+  db.scoreUpdate = math.max(0, db.scoreUpdate - 1)
+  db.syncMsg = math.max(0, db.syncMsg - 1)
+  if not db.updatingScore then
+    if db.remaining <= 0 then
+      gui.log("Time is out")
+      EventEngine:push(events.GameStop())
+    end
+    if db.scoreUpdate <= 0 then
+      gui.log("Updating score...")
+      EventEngine:push(events.UpdateScore())
+      db.scoreUpdate = scoreUpdateInterval
+    end
+    if db.syncMsg <= 0 then
+      gui.log("Sending sync msg")
+      EventEngine:push(events.SendMsg {"time", db.remaining, db.time})
+      db.syncMsg = syncMsgInterval
+    end
   end
 end)
 
@@ -103,6 +130,8 @@ end)
 
 EventEngine:subscribe("gamestop", events.priority.high, function(handler, evt)
   db.started = false
+  db.timers.worldTick:destroy()
+  db.timers.randomLoot:destroy()
   gui.log("Stopping the game...")
   EventEngine:push(events.SendMsg {"gamestop"})
   title("Clearing the map...", "Stopping", 10, 1200, 100)
@@ -114,8 +143,6 @@ EventEngine:subscribe("gamestop", events.priority.high, function(handler, evt)
   title("Destroying loot...", "Stopping", 0, 1200, 100)
   gui.log(" * Destroying loot...")
   EventEngine:push(events.DestroyLoot())
-  db.timers.worldTick:destroy()
-  db.timers.randomLoot:destroy()
   gui.log("Game stopped!")
   title("The game stopped!", "", 20, 80, 10)
 end)

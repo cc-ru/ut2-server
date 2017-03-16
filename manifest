@@ -14,6 +14,7 @@
   {url = "src/gui.lua", dir = "/usr/lib/ut2-serv", name = "gui.lua"},
   {url = "src/game/control.lua", dir = "/usr/lib/ut2-serv/game", name = "control.lua"},
   {url = "src/game/world.lua", dir = "/usr/lib/ut2-serv/game", name = "world.lua"},
+  {url = "src/game/bombs.lua", dir = "/usr/lib/ut2-serv/game", name = "bombs.lua"},
   {url = "src/game/generate.lua", dir = "/usr/lib/ut2-serv/game", name = "generate.lua"},
   {url = "src/glasses/surface.lua", dir = "/usr/lib/ut2-serv/glasses", name = "surface.lua"},
   {url = "src/glasses/update.lua", dir = "/usr/lib/ut2-serv/glasses", name = "update.lua"}
