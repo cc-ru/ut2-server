@@ -5,7 +5,7 @@
   {name = "libforms", version = "^1.0", type = "required"}
  },
  files = {
-  {url = "src/main.lua", dir = "/usr/lib/ut2-serv", name = "main.lua"},
+  {url = "src/main.lua", dir = "/usr/bin", name = "ut2-serv.lua"},
   {url = "src/config.lua", dir = "/usr/lib/ut2-serv", name = "config.lua"},
   {url = "src/db.lua", dir = "/usr/lib/ut2-serv", name = "db.lua"},
   {url = "src/events.lua", dir = "/usr/lib/ut2-serv", name = "events.lua"},
