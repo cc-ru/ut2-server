@@ -29,7 +29,6 @@ EventEngine:subscribe("spawnbonus", events.priority.high, function(handler, evt)
                   "CustomNameVisible:0b," ..
                   "Glowing:1b," ..
                   "Age:" .. 6000 - (evt.lifetime * 20) .. "s," ..
-                  "PickupDelay:32767s," ..
                   "Item:{" ..
                     "Count:" .. evt.count .. "b," ..
                     "Damage:" .. evt.meta .. "s," ..
