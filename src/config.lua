@@ -45,9 +45,9 @@ world.field.l = 27
 
 -- The arena blocks
 world.blocks = {
-  {15, "chisel:obsidian", 3},
-  {30, "chisel:glass", 5},
-  {90, "chisel:planks-jungle", 6}
+  {10, "chisel:obsidian", 3},
+  {25, "chisel:glass", 5},
+  {45, "chisel:planks-jungle", 6}
 }
 
 -- The numeric id of an OpenComputers robot
