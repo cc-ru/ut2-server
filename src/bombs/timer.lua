@@ -1,8 +1,8 @@
 -- original by Doob
 -- fixed/modified by fingercomp
 
-port, radius, t = 31415, 2, 'message'
-timer = 3
+port, radius, t = 31415, 2, 'timer'
+timer = math.random(3, 6)
 sounds = {
   'entity.endermen.teleport',
   'entity.lightning.thunder',
@@ -40,19 +40,19 @@ end
 function signal(...)
   deb.changeBuffer(500)
   local s = {computer.pullSignal(...)}
-  if s[1] == 'modem_message' and s[4] == port then
-    if math.random(1, 20) ~= 1 then
-      bang()
-    end
-  end
   return table.unpack(s)
 end
 
-while computer.uptime() ~= timer do
-  deb.changeBuffer(500)
-  computer.pullSignal(1)
-end
-modem.open(port)
-while true do
-  signal(1)
+if timer then
+  while computer.uptime() ~= timer do
+    signal(1)
+  end
+  if math.random(1, 20) ~= 1 then
+    bang()
+  end
+else
+  modem.open(port)
+  while true do
+    signal(1)
+  end
 end
