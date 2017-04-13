@@ -32,7 +32,9 @@ world.bonuses = {
   --                         ↓ meta
   --                            ↓ nbt
   --                                  ↓ lifetime
-  {0.15, 2, "minecraft:coal", 0, "{}", 30}
+  {0.15, 2, "minecraft:coal", 0, "{}", 12},
+  {0.2, 1, "minecraft:coal", 0, "{}", 30},
+  {0.1, 1, "unreality:explosive", 0, "{}", 25}
 }
 
 -- The arena area
@@ -93,7 +95,9 @@ local function loadConfig(contents)
     },
     world = {
       bonuses = {
-        {0.15, 2, "minecraft:coal", 0, "{}", 30}
+        {0.15, 2, "minecraft:coal", 0, "{}", 12},
+        {0.2, 1, "minecraft:coal", 0, "{}", 30},
+        {0.1, 1, "unreality:explosive", 0, "{}", 25}
       },
       field = {
         x = -13,
