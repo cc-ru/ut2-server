@@ -20,6 +20,8 @@ engine:subscribe("genmap", events.priority.normal, function(handler, evt)
       cb.executeCommand()
     end
   end
+  cb.setCommand("fill -3 65 -3 3 68 3 chisel:planks-jungle 6")
+  cb.executeCommand()
 end)
 
 engine:subscribe("clearmap", events.priority.normal, function(handler, evt)
